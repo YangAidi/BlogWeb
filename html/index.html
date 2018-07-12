@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Blog</title>
+    <script src="https://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="../css/bootstrap-tokenfield.css" rel="stylesheet">
+    <link href="../css/style.css" rel="stylesheet">
+    <link href="../css/editormd.min.css" rel="stylesheet">
+    <script src="../js/cookie.js"></script>
+    <script>
+        var sessionid = getCookie('jsessionid');
+
+        function logout() {
+            $.ajax({
+                type: "GET",
+                url: "http://localhost:8080/logout" + ";jsessionid=" + sessionid,
+                contentType: "application/json",
+                dataType: "json",
+                complete: function (msg) {
+                    var response = msg['responseJSON'];
+                    var resmsg = response['msg'];
+                    if (resmsg === 'success') {
+                        setCookie('jsessionid', "", 1);
+                        alert("注销成功");
+                        self.location = 'index.html';
+                    } else {
+                        //alert("注销失败")
+                    }
+                }
+            });
+        }
+
+        var isLogin = function () {
+            $.ajax({
+                type: "GET",
+                url: "http://localhost:8080/isLogin" + ";jsessionid=" + sessionid,
+                contentType: "application/json",
+                dataType: "json",
+                complete: function (msg) {
+                    var response = msg['responseJSON'];
+                    var resmsg = response['msg'];
+                    if (resmsg === 'success' && response['data'] !== null) {
+                        //alert("欢迎回来  "+response['data']['user']['nickname']);
+                        $("#login_href").text("Logout");
+                        $("#login_href").attr({
+                            "href": "javascript:void(0)",
+                            "onclick": "javascript:logout()"
+                        });
+                        //$("#head").before("<button id=\"logout\" onclick=\"logout()\">logout</button>");
+                    } else {
+                        //alert("未登录")
+                    }
+                }
+//                $.post("http://localhost:8080/isLogin",
+//                    function (data, status) {
+//                    //alert(data['msg']);
+//                        if(data['msg']==="success"&&data['data']!==null){
+//                            alert("自动登录成功");
+//                        }else {
+//                            alert(data['msg']);
+//                        }
+            });
+        };
+        var offset = 0;
+        var load = function () {
+            $.ajax({
+                type: "GET",
+                url: "http://localhost:8080/getArticle" + ";jsessionid=" + sessionid,
+                contentType: "application/json",
+                data: {
+                    offset: (offset++) * 10,
+                    limit: 10
+                },
+                dataType: "json",
+                complete: function (msg) {
+                    var response = msg['responseJSON'];
+                    var articles = response['data'];
+                    pendBlog(articles);
+                }
+            });
+        };
+        load();
+        isLogin();
+        $(document).ready(function () {
+            $("getmore").click(function () {
+                $.ajax({
+                    type: "GET",
+                    url: "http://localhost:8080/getArticle" + ";jsessionid=" + sessionid,
+                    contentType: "application/json",
+                    data: {
+                        offset: (offset++) * 10,
+                        limit: 10
+                    },
+                    dataType: "json",
+                    complete: function (msg) {
+                        var response = msg['responseJSON'];
+                        var articles = response['data'];
+                        pendBlog(articles);
+                    }
+                });
+            });
+        });
+
+        var pendBlog = function (articles) {
+            for (var i = 0; i < articles.length; i++) {
+                $("#article").after("<ul class=\"articles\">\n" +
+                    "                    <li class=\"blogAticle\">\n" +
+                    "                        <div class=\"articleHeader\">\n" +
+                    "                            <p><a href=\"detail.html?id=" + articles[i]['id'] + "\">" + articles[i]['title'] + "</a></p>\n" +
+                    "                        </div>\n" +
+                    "                        <div class=\"articleContent\">\n" +
+                    "                            <p>" + articles[i]['describes'] + "</p>\n" +
+                    "                        </div>\n" +
+                    "                        <div class=\"articleFooter\">\n" +
+                    "                            <ul>\n" +
+                    "                                <li><i class=\"fa fa-calendar\" aria-hidden=\"true\"></i><span>" + new Date(articles[i]['createdDate']) + "</span></li>\n" +
+                    "                                <li><i class=\"fa fa-eye\" aria-hidden=\"true\"></i><span>" + articles[i]['commentCount'] + "</span></li>\n" +
+                    "                                <li><i class=\"fa fa-list\" aria-hidden=\"true\"></i><span>1</span></li>\n" +
+                    "                                <li><i class=\"fa fa-tags\" aria-hidden=\"true\"></i>\n" +
+                    "                                </li>\n" +
+                    "                            </ul>\n" +
+                    "                        </div>\n" +
+                    "                    </li>\n" +
+                    "                </ul>");
+            }
+        };
+    </script>
+</head>
+<body>
+<header class="row">
+    <div class="col-md-2 col-md-offset-2 row logo"><a href="index.html">杨爱迪的Blog</a></div>
+    <div class="col-md-5 col-md-offset-3 navigation">
+        <ul class="row">
+            <li class="col-md-2"><a id="home" href="index.html"><i class="fa fa-home" aria-hidden="true"></i>Home</a>
+            </li>
+            <li class="col-md-2"><a id="github" href="https://github.com/YangAidi/"><i class="fa fa-home"
+                                                                                       aria-hidden="true"></i>Github</a>
+            </li>
+            <li class="col-md-2"><a id="login_href" href="login.html"><i class="fa fa-home" aria-hidden="true"></i>Login</a>
+            </li>
+        </ul>
+    </div>
+</header>
+<div class="wrapper row">
+    <div class="col-md-2"></div>
+    <div class="col-md-10 row">
+        <div class="col-md-10 leftSection">
+            <a id="article"></a>
+            <!--<ul class="articles">-->
+            <!--<li class="blogAticle">-->
+            <!--<div class="articleHeader">-->
+            <!--<p><a href="/article/1">你好</a></p>-->
+            <!--</div>-->
+            <!--<div class="articleContent">-->
+            <!--<p>哈哈</p>-->
+            <!--</div>-->
+            <!--<div class="articleFooter">-->
+            <!--<ul>-->
+            <!--<li><i class="fa fa-calendar" aria-hidden="true"></i><span>2018-06-26</span></li>-->
+            <!--<li><i class="fa fa-eye" aria-hidden="true"></i><span>26</span></li>-->
+            <!--<li><i class="fa fa-list" aria-hidden="true"></i><span>1</span></li>-->
+            <!--<li><i class="fa fa-tags" aria-hidden="true"></i>-->
+            <!--</li>-->
+            <!--<li class="readMore"><a href="/article/1">read more</a></li>-->
+            <!--</ul>-->
+            <!--</div>-->
+            <!--</li>-->
+            <!--</ul>-->
+            <button id="getmore" style="float:right">获取更多文章</button>
+        </div>
+    </div>
+</div>
+</div>
+<footer>
+    <div class="row">
+        <div class="col-md-1 col-md-offset-5 author"><span>MyBlog</span></div>
+    </div>
+</footer>
+</body>
+</html>

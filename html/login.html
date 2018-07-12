@@ -1,0 +1,146 @@
+<html>
+<head>
+    <!--<meta name="referrer" content="application/json">-->
+    <meta http-equiv="content-type" content="application/json; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.bootcss.com/jquery/1.10.2/jquery.min.js">
+    </script>
+    <script src="../js/cookie.js"></script>
+    <script>
+        //        var get=function getSessionId(){
+        //            var c_name = 'JSESSIONID';
+        //            if(document.cookie.length>0){
+        //                c_start=document.cookie.indexOf(c_name + "=");
+        //                if(c_start!=-1){
+        //                    c_start=c_start + c_name.length+1;
+        //                    c_end=document.cookie.indexOf(";",c_start);
+        //                    if(c_end==-1) c_end=document.cookie.length;
+        //                    return unescape(document.cookie.substring(c_start,c_end));
+        //                }else{
+        //                    //手动从后台传来sessionid
+        //                    var JSESSIONID = $('#JSESSIONID').val();
+        //                    return JSESSIONID;
+        //                }
+        //            }
+        //        };
+        var login = function login() {
+//            $.ajax({
+//                type : "POST",
+//                url : "http://http://www.xinshenwoyaoxue.com:8080/login",
+//                data : JSON.stringify({
+//                        "username":document.forms["login"]["username"].value,
+//                        "password":document.forms["login"]["password"].value
+//                    }
+//                ),
+//                contentType : "application/json",
+//                dataType : "json",
+//                complete:function(msg) {
+//                    var response=msg['responseJSON'];
+//                    var resmsg=response['msg'];
+//                    if(resmsg==='success'&&response['data']!==null){
+//                        alert("欢迎回来  "+response['data']['user']['nickname']);
+////                        window.history.back(-1);
+//                        alert(get());
+//                        // top.location="index.html";
+////                        window.navigate("index.html");
+//                    }else {
+//                        alert(resmsg)
+//                    }
+//                }
+//            });
+            $.get("http://localhost:8080/login",
+                {
+                    username: document.forms["login"]["username"].value,
+                    password: document.forms["login"]["password"].value
+                },
+                function (data, status) {
+                    self.location = 'index.html';
+                    if (data['msg'] === "success" && data['data'] !== null) {
+                        alert("欢迎回来  " + data['data']['user']['nickname']);
+                        setCookie('jsessionid', data['data']['sessionId'], 1);
+                        self.location = 'index.html';
+                    } else {
+                        alert(data['msg']);
+                    }
+                });
+        };
+        var register = function register() {
+            $.ajax({
+                type: "POST",
+                url: "http://localhost:8080/register",
+                data: JSON.stringify({
+                        "username": document.forms["register"]["username"].value,
+                        "password": document.forms["register"]["password"].value,
+                        "nickname": document.forms["register"]["nickname"].value
+                    }
+                ),
+                contentType: "application/json",
+                dataType: "json",
+                complete: function (msg) {
+                    var response = msg['responseJSON'];
+                    var resmsg = response['msg'];
+                    if (resmsg === 'success') {
+                        alert("注册成功！");
+                    } else {
+                        alert(resmsg)
+                    }
+                }
+            });
+
+//            $.post("http://localhost:8080/register",
+//                {
+//                    username:document.forms["register"]["username"].value,
+//                    password:document.forms["register"]["password"].value,
+//                    nickname:document.forms["register"]["nickname"].value
+//                },
+//                function(data,status){
+//                    // alert("数据: \n" + data + "\n状态: " + status);
+//                    if(data['msg']==="success"&&data['data']!==null){
+//                        alert("欢迎回来  "+data['data']['user']['nickname']);
+//                        self.location='index.html';
+//                    }else {
+//                        alert(data['msg']);
+//                    }
+//                });
+        };
+    </script>
+</head>
+<body>
+<b>Login</b><br><br>
+<form method="get" action="javascript:login()" name="login">
+    <table border="0">
+        <tr>
+            <td>username:</td>
+            <td><input type="text" name="username" size="20" autocorrect="off" spellcheck="false" autocapitalize="off"
+                       autofocus="true"></td>
+        </tr>
+        <tr>
+            <td>password:</td>
+            <td><input type="password" name="password" size="20"></td>
+        </tr>
+    </table>
+    <br>
+    <input type="submit" value="login"></form>
+<!--<a href="forgot">Forgot your password?</a><br><br>-->
+<b>Create Account</b><br><br>
+<form method="post" action="javascript:register()" name="register">
+    <table border="0">
+        <tr>
+            <td>username:</td>
+            <td><input type="text" name="username" size="20" autocorrect="off" spellcheck="false" autocapitalize="off">
+            </td>
+        </tr>
+        <tr>
+            <td>nickname:</td>
+            <td><input type="text" name="nickname" size="20" autocorrect="off" spellcheck="false" autocapitalize="off">
+            </td>
+        </tr>
+        <tr>
+            <td>password:</td>
+            <td><input type="password" name="password" size="20"></td>
+        </tr>
+    </table>
+    <br>
+    <input type="submit" value="create account"></form>
+</body>
+</html>

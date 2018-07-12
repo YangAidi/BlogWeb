@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Blog</title>
+    <script src="https://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="../css/bootstrap-tokenfield.css" rel="stylesheet">
+    <link href="../css/style.css" rel="stylesheet">
+    <link href="../css/editormd.min.css" rel="stylesheet">
+    <script src="../js/index.js"></script>
+    <script>
+        function GetRequest() {
+            var url = location.search; //获取url中"?"符后的字串
+            var theRequest = new Object();
+            if (url.indexOf("?") != -1) {
+                var str = url.substr(1);
+                strs = str.split("&");
+                for (var i = 0; i < strs.length; i++) {
+                    theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
+                }
+            }
+            return theRequest;
+        }
+
+        Request = GetRequest();
+
+        function loadDetail() {
+            $.ajax({
+                type: "GET",
+                url: "http://localhost:8080/getArticleDetail",
+                contentType: "application/json",
+                data: {
+                    id: Request['id']
+                },
+                dataType: "json",
+                complete: function (msg) {
+                    var response = msg['responseJSON'];
+                    var article = response['data']['article'];
+                    $("#article").after("<h1>你好</h1>\n" +
+                        "            <div class=\"articleFooter articleHead\">\n" +
+                        "                <ul>\n" +
+                        "                    <li><i class=\"fa fa-calendar fa-1x\" aria-hidden=\"true\"></i><span>" + new Date(article['createdDate']) + "</span></li>\n" +
+                        "                    <li><i class=\"fa fa-eye\" aria-hidden=\"true\"></i><span>" + article['commentCount'] + "</span></li>\n" +
+                        "                    <li><i class=\"fa fa-list fa-1x\" aria-hidden=\"true\"></i><span>" + article['category'] + "</span></li>\n" +
+                        "                    <li><i class=\"fa fa-tags fa-1x\" aria-hidden=\"true\"></i>\n" +
+                        "                    </li>\n" +
+                        "                </ul>\n" +
+                        "            </div>\n" +
+                        "            <hr>\n" +
+                        "            <article class=\"article\">" + article['content'] + "</article>\n" +
+                        "            <hr>");
+                    //alert(article['article']);
+                    //pendBlog(articles);
+                }
+            });
+        }
+
+        isLogin();
+        loadDetail();
+    </script>
+</head>
+<body>
+<header class="row">
+    <div class="col-md-2 col-md-offset-2 row logo"><a href="index.html">杨爱迪的Blog</a></div>
+    <div class="col-md-5 col-md-offset-3 navigation">
+        <ul class="row">
+            <li class="col-md-2"><a id="home" href="index.html"><i class="fa fa-home" aria-hidden="true"></i>Home</a>
+            </li>
+            <li class="col-md-2"><a id="github" href="https://github.com/YangAidi/"><i class="fa fa-home"
+                                                                                       aria-hidden="true"></i>Github</a>
+            </li>
+            <li class="col-md-2"><a id="login_href" href="login.html"><i class="fa fa-home" aria-hidden="true"></i>Login</a>
+            </li>
+        </ul>
+    </div>
+</header>
+<div class="articleContant">
+    <div class="wrapper row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8 row articleShow">
+            <a id="article"></a>
+            <!--<h1>你好</h1>-->
+            <!--<div class="articleFooter articleHead">-->
+            <!--<ul>-->
+            <!--<li><i class="fa fa-calendar fa-1x" aria-hidden="true"></i><span>2018-06-26</span></li>-->
+            <!--<li><i class="fa fa-eye" aria-hidden="true"></i><span>26</span></li>-->
+            <!--<li><i class="fa fa-list fa-1x" aria-hidden="true"></i><span>1</span></li>-->
+            <!--<li><i class="fa fa-tags fa-1x" aria-hidden="true"></i>-->
+            <!--</li>-->
+            <!--</ul>-->
+            <!--</div>-->
+            <!--<hr>-->
+            <!--<article class="article">这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容这是内容</article>-->
+            <!--<hr>-->
+        </div>
+    </div>
+</div>
+<footer>
+    <div class="row">
+        <div class="col-md-1 col-md-offset-5 author"><span>MyBlog</span></div>
+    </div>
+</footer>
+</body>
+</html>

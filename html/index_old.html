@@ -1,0 +1,129 @@
+<!--<!DOCTYPE html>-->
+<!--<html>-->
+<!--<head>-->
+<!--<meta http-equiv="content-type" content="application/json; charset=UTF-8">-->
+<!--<meta name="viewport"  content="width=device-width, initial-scale=1.0">-->
+<!--<script src="https://cdn.bootcss.com/jquery/1.10.2/jquery.min.js">-->
+<!--</script>-->
+<!--<script src="../js/cookie.js">-->
+<!--</script>-->
+<!--<title>MyBlog</title>-->
+<!--<script>-->
+<!--var sessionid=getCookie('jsessionid');-->
+<!--function logout() {-->
+<!--$.ajax({-->
+<!--type : "GET",-->
+<!--url : "http://localhost:8080/logout"+";jsessionid="+sessionid,-->
+<!--contentType : "application/json",-->
+<!--dataType : "json",-->
+<!--complete:function(msg) {-->
+<!--var response=msg['responseJSON'];-->
+<!--var resmsg=response['msg'];-->
+<!--if(resmsg==='success'){-->
+<!--setCookie('jsessionid',"",1);-->
+<!--alert("注销成功");-->
+<!--self.location='index.html';-->
+<!--}else {-->
+<!--//alert("注销失败")-->
+<!--}-->
+<!--}-->
+<!--});-->
+<!--}-->
+<!--var isLogin=function () {-->
+<!--$.ajax({-->
+<!--type : "GET",-->
+<!--url : "http://localhost:8080/isLogin"+";jsessionid="+sessionid,-->
+<!--contentType : "application/json",-->
+<!--dataType : "json",-->
+<!--complete:function(msg) {-->
+<!--var response=msg['responseJSON'];-->
+<!--var resmsg=response['msg'];-->
+<!--if(resmsg==='success'&&response['data']!==null){-->
+<!--//alert("欢迎回来  "+response['data']['user']['nickname']);-->
+<!--$("#login_href").remove();-->
+<!--$("#head").before("<button id=\"logout\" onclick=\"logout()\">logout</button>");-->
+<!--}else {-->
+<!--//alert("未登录")-->
+<!--}-->
+<!--}-->
+<!--//                $.post("http://localhost:8080/isLogin",-->
+<!--//                    function (data, status) {-->
+<!--//                    //alert(data['msg']);-->
+<!--//                        if(data['msg']==="success"&&data['data']!==null){-->
+<!--//                            alert("自动登录成功");-->
+<!--//                        }else {-->
+<!--//                            alert(data['msg']);-->
+<!--//                        }-->
+<!--});-->
+<!--};-->
+<!--var offset = 0;-->
+<!--var load = function () {-->
+<!--$.ajax({-->
+<!--type: "GET",-->
+<!--url: "http://localhost:8080/getArticle"+";jsessionid="+sessionid,-->
+<!--contentType: "application/json",-->
+<!--data: {-->
+<!--offset: (offset++)*10,-->
+<!--limit: 10-->
+<!--},-->
+<!--dataType: "json",-->
+<!--complete: function (msg) {-->
+<!--var response=msg['responseJSON'];-->
+<!--var articles = response['data'];-->
+<!--pendBlog(articles);-->
+<!--}-->
+<!--});-->
+<!--};-->
+<!--load();-->
+<!--isLogin();-->
+<!--$(document).ready(function () {-->
+<!--$("getmore").click(function () {-->
+<!--$.ajax({-->
+<!--type: "GET",-->
+<!--url: "http://localhost:8080/getArticle"+";jsessionid="+sessionid,-->
+<!--contentType: "application/json",-->
+<!--data: {-->
+<!--offset: (offset++)*10,-->
+<!--limit: 10-->
+<!--},-->
+<!--dataType: "json",-->
+<!--complete: function (msg) {-->
+<!--var response=msg['responseJSON'];-->
+<!--var articles = response['data'];-->
+<!--pendBlog(articles);-->
+<!--}-->
+<!--});-->
+<!--});-->
+<!--});-->
+
+<!--var pendBlog = function (articles) {-->
+<!--for (var i = 0; i < articles.length; i++) {-->
+<!--$("#getmore").before("<ul class=\"detail_list\">\n" +-->
+<!--"    <li>\n" +-->
+<!--"        <h4><a href=\"detail.html?id=" + articles[i]['id'] + "\" target=\"_blank\">" + articles[i]['title'] + "</a></h4>\n" +-->
+<!--"        <p class=\"detail_p\">" + articles[i]['describes'] + "</p>\n" +-->
+<!--"        <div class=\"detail_b\"><span>" + new Date(articles[i]['createdDate']) + "</span>\n" +-->
+<!--"            <div class=\"fa fa-eye\"></div><em>评论数量：" + articles[i]['commentCount'] + "</em>\n" +-->
+<!--"        </div>\n" +-->
+<!--"    </li>\n" +-->
+<!--"</ul>");-->
+
+<!--}-->
+<!--};-->
+<!--</script>-->
+<!--</head>-->
+<!--<body>-->
+<!--<a id="head"></a>-->
+<!--<a  id="login_href" href="login.html">login</a>-->
+<!--&lt;!&ndash;统计博文&ndash;&gt;-->
+<!--<div id="count" class="statistics_t">共<span>6</span>篇博文</div>-->
+
+<!--&lt;!&ndash;博文列表&ndash;&gt;-->
+
+<!--<button id="getmore">获取更多文章</button>-->
+
+<!--</body>-->
+<!--</html>-->
+
+
+
