@@ -48,7 +48,7 @@
 //                    }
 //                }
 //            });
-            $.get("http://localhost:8080/login",
+            $.get("http://www.xinshenwoyaoxue.com:9090/login",
                 {
                     username: document.forms["login"]["username"].value,
                     password: document.forms["login"]["password"].value
@@ -67,7 +67,7 @@
         var register = function register() {
             $.ajax({
                 type: "POST",
-                url: "http://localhost:8080/register",
+                url: "http://www.xinshenwoyaoxue.com:9090/register",
                 data: JSON.stringify({
                         "username": document.forms["register"]["username"].value,
                         "password": document.forms["register"]["password"].value,
@@ -87,7 +87,7 @@
                 }
             });
 
-//            $.post("http://localhost:8080/register",
+//            $.post("http://www.xinshenwoyaoxue.com:9090/register",
 //                {
 //                    username:document.forms["register"]["username"].value,
 //                    password:document.forms["register"]["password"].value,

@@ -29,7 +29,7 @@
         function loadDetail() {
             $.ajax({
                 type: "GET",
-                url: "http://localhost:8080/getArticleDetail",
+                url: "http://www.xinshenwoyaoxue.com:9090/getArticleDetail",
                 contentType: "application/json",
                 data: {
                     id: Request['id']
@@ -56,8 +56,6 @@
                 }
             });
         }
-
-        isLogin();
         loadDetail();
     </script>
 </head>
@@ -70,8 +68,6 @@
             </li>
             <li class="col-md-2"><a id="github" href="https://github.com/YangAidi/"><i class="fa fa-home"
                                                                                        aria-hidden="true"></i>Github</a>
-            </li>
-            <li class="col-md-2"><a id="login_href" href="login.html"><i class="fa fa-home" aria-hidden="true"></i>Login</a>
             </li>
         </ul>
     </div>

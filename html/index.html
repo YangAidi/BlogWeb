@@ -16,7 +16,7 @@
         function logout() {
             $.ajax({
                 type: "GET",
-                url: "http://localhost:8080/logout" + ";jsessionid=" + sessionid,
+                url: "http://www.xinshenwoyaoxue.com:9090/logout" + ";jsessionid=" + sessionid,
                 contentType: "application/json",
                 dataType: "json",
                 complete: function (msg) {
@@ -36,7 +36,7 @@
         var isLogin = function () {
             $.ajax({
                 type: "GET",
-                url: "http://localhost:8080/isLogin" + ";jsessionid=" + sessionid,
+                url: "http://www.xinshenwoyaoxue.com:9090/isLogin" + ";jsessionid=" + sessionid,
                 contentType: "application/json",
                 dataType: "json",
                 complete: function (msg) {
@@ -54,7 +54,7 @@
                         //alert("未登录")
                     }
                 }
-//                $.post("http://localhost:8080/isLogin",
+//                $.post("http://www.xinshenwoyaoxue.com:9090/isLogin",
 //                    function (data, status) {
 //                    //alert(data['msg']);
 //                        if(data['msg']==="success"&&data['data']!==null){
@@ -65,14 +65,15 @@
             });
         };
         var offset = 0;
-        var load = function () {
+
+        function load() {
             $.ajax({
                 type: "GET",
-                url: "http://localhost:8080/getArticle" + ";jsessionid=" + sessionid,
+                url: "http://www.xinshenwoyaoxue.com:9090/getArticle" + ";jsessionid=" + sessionid,
                 contentType: "application/json",
                 data: {
-                    offset: (offset++) * 10,
-                    limit: 10
+                    offset: (offset++) * 5,
+                    limit: 5
                 },
                 dataType: "json",
                 complete: function (msg) {
@@ -81,18 +82,18 @@
                     pendBlog(articles);
                 }
             });
-        };
+        }
         load();
         isLogin();
         $(document).ready(function () {
-            $("getmore").click(function () {
+            $("#getmore").click(function () {
                 $.ajax({
                     type: "GET",
-                    url: "http://localhost:8080/getArticle" + ";jsessionid=" + sessionid,
+                    url: "http://www.xinshenwoyaoxue.com:9090/getArticle" + ";jsessionid=" + sessionid,
                     contentType: "application/json",
                     data: {
-                        offset: (offset++) * 10,
-                        limit: 10
+                        offset: (offset++) * 5,
+                        limit: 5
                     },
                     dataType: "json",
                     complete: function (msg) {
@@ -106,25 +107,25 @@
 
         var pendBlog = function (articles) {
             for (var i = 0; i < articles.length; i++) {
-                $("#article").after("<ul class=\"articles\">\n" +
-                    "                    <li class=\"blogAticle\">\n" +
-                    "                        <div class=\"articleHeader\">\n" +
-                    "                            <p><a href=\"detail.html?id=" + articles[i]['id'] + "\">" + articles[i]['title'] + "</a></p>\n" +
-                    "                        </div>\n" +
-                    "                        <div class=\"articleContent\">\n" +
-                    "                            <p>" + articles[i]['describes'] + "</p>\n" +
-                    "                        </div>\n" +
-                    "                        <div class=\"articleFooter\">\n" +
-                    "                            <ul>\n" +
-                    "                                <li><i class=\"fa fa-calendar\" aria-hidden=\"true\"></i><span>" + new Date(articles[i]['createdDate']) + "</span></li>\n" +
-                    "                                <li><i class=\"fa fa-eye\" aria-hidden=\"true\"></i><span>" + articles[i]['commentCount'] + "</span></li>\n" +
-                    "                                <li><i class=\"fa fa-list\" aria-hidden=\"true\"></i><span>1</span></li>\n" +
-                    "                                <li><i class=\"fa fa-tags\" aria-hidden=\"true\"></i>\n" +
-                    "                                </li>\n" +
-                    "                            </ul>\n" +
-                    "                        </div>\n" +
-                    "                    </li>\n" +
-                    "                </ul>");
+                $("#article").append("<div class=\"wrapper row\">\n" +
+                    "        <div class=\"col-md-2\"></div>\n" +
+                    "        <div class=\"col-md-8 row articleShow\">\n" +
+                    "            <a id=\"article\"></a>\n" +
+                    "            <h2><a href=\"detail.html?id=" + articles[i]['id'] + "\" target=\"_blank\">" + articles[i]['title'] + "</a></h2>\n" +
+                    "            <div class=\"articleFooter articleHead\">\n" +
+                    "            <ul>\n" +
+                    "            <li><i class=\"fa fa-calendar fa-1x\" aria-hidden=\"true\"></i><span>" + new Date(articles[i]['createdDate']) + "</span></li>\n" +
+                    "            <li><i class=\"fa fa-eye\" aria-hidden=\"true\"></i><span>" + articles[i]['commentCount'] + "</span></li>\n" +
+                    "            <li><i class=\"fa fa-list fa-1x\" aria-hidden=\"true\"></i><span>" + articles[i]['category'] + "</span></li>\n" +
+                    "            <li><i class=\"fa fa-tags fa-1x\" aria-hidden=\"true\"></i>\n" +
+                    "            </li>\n" +
+                    "            </ul>\n" +
+                    "            </div>\n" +
+                    "            <hr>\n" +
+                    "            <article class=\"article\">" + articles[i]['describes'] + "</article>\n" +
+                    "            <hr>\n" +
+                    "        </div>\n" +
+                    "    </div>\n");
             }
         };
     </script>
@@ -144,38 +145,24 @@
         </ul>
     </div>
 </header>
-<div class="wrapper row">
-    <div class="col-md-2"></div>
-    <div class="col-md-10 row">
-        <div class="col-md-10 leftSection">
-            <a id="article"></a>
-            <!--<ul class="articles">-->
-            <!--<li class="blogAticle">-->
-            <!--<div class="articleHeader">-->
-            <!--<p><a href="/article/1">你好</a></p>-->
-            <!--</div>-->
-            <!--<div class="articleContent">-->
-            <!--<p>哈哈</p>-->
-            <!--</div>-->
-            <!--<div class="articleFooter">-->
-            <!--<ul>-->
-            <!--<li><i class="fa fa-calendar" aria-hidden="true"></i><span>2018-06-26</span></li>-->
-            <!--<li><i class="fa fa-eye" aria-hidden="true"></i><span>26</span></li>-->
-            <!--<li><i class="fa fa-list" aria-hidden="true"></i><span>1</span></li>-->
-            <!--<li><i class="fa fa-tags" aria-hidden="true"></i>-->
-            <!--</li>-->
-            <!--<li class="readMore"><a href="/article/1">read more</a></li>-->
-            <!--</ul>-->
-            <!--</div>-->
-            <!--</li>-->
-            <!--</ul>-->
-            <button id="getmore" style="float:right">获取更多文章</button>
-        </div>
-    </div>
-</div>
-</div>
+<a id="article"></a>
+<!--<div class="wrapper row">-->
+<!--<div class="col-md-2"></div>-->
+<!--<div class="col-md-10 row">-->
+<!--<div class="col-md-10 leftSection">-->
+<!--<article>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+
 <footer>
+    <div class="col-md-1 col-md-offset-9 author">
+        <button id="getmore" style="float:right">更多文章</button>
+    </div>
+    <br>
     <div class="row">
+
         <div class="col-md-1 col-md-offset-5 author"><span>MyBlog</span></div>
     </div>
 </footer>
