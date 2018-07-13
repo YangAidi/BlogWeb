@@ -105,26 +105,30 @@
         });
 
         var pendBlog = function (articles) {
-            for (var i = 0; i < articles.length; i++) {
-                $("#article").append("<div class=\"wrapper row\">\n" +
-                    "        <div class=\"col-md-2\"></div>\n" +
-                    "        <div class=\"col-md-8 row articleShow\">\n" +
-                    "            <a id=\"article\"></a>\n" +
-                    "            <h2><a href=\"detail.html?id=" + articles[i]['id'] + "\" target=\"_blank\">" + articles[i]['title'] + "</a></h2>\n" +
-                    "            <div class=\"articleFooter articleHead\">\n" +
-                    "            <ul>\n" +
-                    "            <li><i class=\"fa fa-calendar fa-1x\" aria-hidden=\"true\"></i><span>" + new Date(articles[i]['createdDate']) + "</span></li>\n" +
-                    "            <li><i class=\"fa fa-eye\" aria-hidden=\"true\"></i><span>" + articles[i]['commentCount'] + "</span></li>\n" +
-                    "            <li><i class=\"fa fa-list fa-1x\" aria-hidden=\"true\"></i><span>" + articles[i]['category'] + "</span></li>\n" +
-                    "            <li><i class=\"fa fa-tags fa-1x\" aria-hidden=\"true\"></i>\n" +
-                    "            </li>\n" +
-                    "            </ul>\n" +
-                    "            </div>\n" +
-                    "            <hr>\n" +
-                    "            <article class=\"article\">" + articles[i]['describes'] + "</article>\n" +
-                    "            <hr>\n" +
-                    "        </div>\n" +
-                    "    </div>\n");
+            if (articles == null) {
+                alert("到底了！")
+            } else {
+                for (var i = 0; i < articles.length; i++) {
+                    $("#article").append("<div class=\"wrapper row\">\n" +
+                        "        <div class=\"col-md-2\"></div>\n" +
+                        "        <div class=\"col-md-8 row articleShow\">\n" +
+                        "            <a id=\"article\"></a>\n" +
+                        "            <h2><a href=\"detail.html?id=" + articles[i]['id'] + "\" target=\"_blank\">" + articles[i]['title'] + "</a></h2>\n" +
+                        "            <div class=\"articleFooter articleHead\">\n" +
+                        "            <ul>\n" +
+                        "            <li><i class=\"fa fa-calendar fa-1x\" aria-hidden=\"true\"></i><span>" + new Date(articles[i]['createdDate']) + "</span></li>\n" +
+                        "            <li><i class=\"fa fa-eye\" aria-hidden=\"true\"></i><span>" + articles[i]['commentCount'] + "</span></li>\n" +
+                        "            <li><i class=\"fa fa-list fa-1x\" aria-hidden=\"true\"></i><span>" + articles[i]['category'] + "</span></li>\n" +
+                        "            <li><i class=\"fa fa-tags fa-1x\" aria-hidden=\"true\"></i>\n" +
+                        "            </li>\n" +
+                        "            </ul>\n" +
+                        "            </div>\n" +
+                        "            <hr>\n" +
+                        "            <article class=\"article\">" + articles[i]['describes'] + "</article>\n" +
+                        "            <hr>\n" +
+                        "        </div>\n" +
+                        "    </div>\n");
+                }
             }
         };
     </script>
